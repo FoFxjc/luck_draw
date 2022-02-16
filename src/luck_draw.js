@@ -29,7 +29,7 @@ import luckdraw_bg from './images/luck_draw_bg.jpeg'
 
 const uniqueElementsArray = []
 
-const people = ['Peter', 'Tom']
+const people = ['Peter', 'Kok Ping', 'Hui Min']
 
 let images = importAll(require.context('./images/tiger_pics', false, /\.png/))
 
@@ -80,13 +80,9 @@ export default function LuckDraw() {
 
   const [start, setStart] = useState(false)
 
-  const [remainPeople, setRemainPeople] = useState(['Peter', 'Tom', 'Jack'])
+  const [remainPeople, setRemainPeople] = useState(people)
 
-  const [thisRoundRemainPeople, setThisRoundRemainPeople] = useState([
-    'Peter',
-    'Tom',
-    'Jack',
-  ])
+  const [thisRoundRemainPeople, setThisRoundRemainPeople] = useState(people)
 
   const [round, setRound] = useState(1)
 
@@ -94,17 +90,7 @@ export default function LuckDraw() {
 
   const [showPrice, setShowPrice] = useState(false)
 
-  const [priceList, setpriceList] = useState([
-    {
-      card: {
-        type: 'tiger_pic_15_8',
-        image: '/static/media/tiger_pic_15_8.82d8c5c4.png',
-        index: 15,
-        price: 8,
-      },
-      person: 'Jack',
-    },
-  ])
+  const [priceList, setpriceList] = useState([])
 
   const [debug, setDebug] = useState(false)
 
@@ -261,7 +247,16 @@ export default function LuckDraw() {
   return (
     <div className="App">
       <Grid container spacing={2} className="header_container">
-        <Grid item md={3}>
+        <Grid
+          item
+          md={12}
+          style={{
+            background: 'transparent',
+          }}
+        >
+          <div className="bg_title"></div>
+        </Grid>
+        {/* <Grid item md={3}>
           <Paper
             elevation={0}
             style={{
@@ -280,7 +275,7 @@ export default function LuckDraw() {
               Round {round}
             </Typography>
           </Paper>
-        </Grid>
+        </Grid> */}
       </Grid>
       <Grid container spacing={5} className="container">
         <Grid item md={9}>
@@ -302,11 +297,29 @@ export default function LuckDraw() {
         </Grid>
         <Grid item md={3}>
           <Paper
+            elevation={0}
+            style={{
+              height: '40px',
+              paddingLeft: '0px',
+              paddingTop: '0px',
+              backgroundColor: 'transparent',
+            }}
+          >
+            <Typography
+              variant="h5"
+              component="div"
+              gutterBottom
+              style={{ color: 'rgb(248, 197, 69)', fontWeight: 'bold' }}
+            >
+              Round {round}
+            </Typography>
+          </Paper>
+          <Paper
             className="price_board"
             elevation={3}
             style={{
-              maxHeight: '520px',
-              minHeight: '520px',
+              maxHeight: '580px',
+              minHeight: '580px',
               overflow: 'auto',
             }}
           >

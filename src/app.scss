@@ -53,7 +53,7 @@ body{
 
   .container {
 
-    padding: 10px 240px 0px 360px;
+    padding: 50px 180px 0px 300px;
     .game_board {
       // border: 1px solid #DEDEDE;
       padding: 5px;
@@ -79,7 +79,8 @@ body{
   }
 
   .header_container{
-    padding: 30px 240px 5px 360px;
+    padding: 30px 300px 5px 390px;
+    background: transparent;
   }
   .footer_container{
     padding: 50px 240px 0px 360px;
@@ -158,5 +159,14 @@ body{
     box-shadow: 1px 1px 2px 2px #DEDEDE;
   }
 
+}
+.bg_title{
+  height: 120px;
+  width: 100%;
+
+  background-position: center center;
+  background-size: 100% 100%;
+  background-image: url('./images/big_title.png');
+  opacity: 0.75;
 }
 
