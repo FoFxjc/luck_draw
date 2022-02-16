@@ -123,6 +123,8 @@ export default function LuckDraw() {
 
   const [debug, setDebug] = useState(false)
 
+  const [tryTime, setTryTime] = useState(0)
+
   const disable = () => {
     setShouldDisableAllCards(true)
   }
@@ -216,12 +218,26 @@ export default function LuckDraw() {
         // setCards(shuffleCards(cards.concat(cards)))
       }, 500)
     } else {
-      setThisRoundRemainPeople(_thisRoundRemainPeople)
-      setCurrentPerson(null)
+      if (round == 1) {
+        if (tryTime + 1 > 1) {
+          timeout.current = setTimeout(() => {
+            setCurrentPerson(null)
+            setThisRoundRemainPeople(_thisRoundRemainPeople)
+            setTryTime(0)
+          }, 2000)
+        }
+        setTryTime(tryTime + 1)
+      } else {
+        timeout.current = setTimeout(() => {
+          setCurrentPerson(null)
+          setThisRoundRemainPeople(_thisRoundRemainPeople)
+          setTryTime(0)
+        }, 2000)
+      }
 
       timeout.current = setTimeout(() => {
         setOpenCards([])
-      }, 3000)
+      }, 2000)
     }
   }
   const handleCardClick = (index) => {
