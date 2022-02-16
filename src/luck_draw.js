@@ -18,6 +18,8 @@ import CardContent from '@mui/material/CardContent'
 import TextLoop from 'react-text-loop'
 import Typography from '@mui/material/Typography'
 import luckdraw_bg from './images/luck_draw_bg.jpeg'
+import go_button from './images/button_3.png'
+import show_price_button from './images/show_price_button.png'
 // import tiger_pic_0 from './images/tiger_pic_0.png'
 // import tiger_pic_1 from './images/tiger_pic_1.png'
 // import tiger_pic_2 from './images/tiger_pic_2.png'
@@ -420,7 +422,12 @@ export default function LuckDraw() {
                 variant="h5"
                 component="div"
                 gutterBottom
-                style={{ width: '100px', color: 'rgb(248, 197, 69)' }}
+                style={{
+                  width: '100px',
+                  color: 'rgb(248, 197, 69)',
+                  marginTop: '-5px',
+                  marginLeft: '-5px',
+                }}
               >
                 {currentPerson}
               </Typography>
@@ -432,7 +439,12 @@ export default function LuckDraw() {
                       variant="h5"
                       component="div"
                       gutterBottom
-                      style={{ width: '100px', color: 'rgb(248, 197, 69)' }}
+                      style={{
+                        width: '100px',
+                        color: 'rgb(248, 197, 69)',
+                        marginTop: '-5px',
+                        marginLeft: '-5px',
+                      }}
                     >
                       {person}
                     </Typography>
@@ -444,16 +456,30 @@ export default function LuckDraw() {
         </Grid>
 
         <Grid item md={3}>
-          <Paper style={{ height: '100%' }}>
+          <Paper
+            elevation={0}
+            style={{
+              height: '100%',
+              marginTop: '-20px',
+              background: 'transparent',
+            }}
+          >
             <Stack spacing={2} direction="row">
               {!start ? (
-                <Button variant="contained" onClick={startLoop}>
-                  Start
-                </Button>
+                <img
+                  src={go_button}
+                  onClick={startLoop}
+                  className="go_button"
+                ></img>
               ) : (
-                <Button variant="contained" onClick={endLoop}>
-                  Stop
-                </Button>
+                // <Button variant="contained" onClick={startLoop}>
+                //   Start
+                // </Button>
+                <img
+                  src={go_button}
+                  onClick={endLoop}
+                  className="go_button"
+                ></img>
               )}
 
               <Button
@@ -464,14 +490,13 @@ export default function LuckDraw() {
               >
                 Debug
               </Button>
-              <Button
-                variant="contained"
+              <img
+                src={show_price_button}
                 onClick={() => {
                   setShowPrice(!showPrice)
                 }}
-              >
-                ShowPrice
-              </Button>
+                className="price_button"
+              ></img>
             </Stack>
           </Paper>
         </Grid>
