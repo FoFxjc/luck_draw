@@ -20,6 +20,7 @@ import Typography from '@mui/material/Typography'
 import luckdraw_bg from './images/luck_draw_bg.jpeg'
 import go_button from './images/button_3.png'
 import show_price_button from './images/show_price_button.png'
+import sort_button from './images/sort_button.png'
 // import tiger_pic_0 from './images/tiger_pic_0.png'
 // import tiger_pic_1 from './images/tiger_pic_1.png'
 // import tiger_pic_2 from './images/tiger_pic_2.png'
@@ -31,7 +32,33 @@ import show_price_button from './images/show_price_button.png'
 
 const uniqueElementsArray = []
 
-const people = ['Peter', 'Kok Ping', 'Hui Min']
+const people = [
+  'Peter',
+  'Kok Ping',
+  'Hui Min',
+  'Era',
+  'Simson',
+  'Muthu',
+  'Kamal',
+  'Corn',
+  'Jignesh',
+  'Sathiya',
+  'Sathappan',
+  'Palani',
+  'Ramya',
+  'Shoba',
+  'Rupali',
+  'Vaithess',
+  'Ashok',
+  'Anban',
+  'Nand',
+  'Pani',
+  'Priya',
+  'Raj',
+  'Mani',
+  'Satheesh',
+  'Ariv',
+]
 
 let images = importAll(require.context('./images/tiger_pics', false, /\.png/))
 
@@ -194,7 +221,7 @@ export default function LuckDraw() {
 
       timeout.current = setTimeout(() => {
         setOpenCards([])
-      }, 500)
+      }, 3000)
     }
   }
   const handleCardClick = (index) => {
@@ -482,14 +509,14 @@ export default function LuckDraw() {
                 ></img>
               )}
 
-              <Button
+              {/* <Button
                 variant="contained"
                 onClick={() => {
                   setDebug(!debug)
                 }}
               >
                 Debug
-              </Button>
+              </Button> */}
               <img
                 src={show_price_button}
                 onClick={() => {
@@ -497,6 +524,34 @@ export default function LuckDraw() {
                 }}
                 className="price_button"
               ></img>
+              {remainPeople.length === 0 ? (
+                <img
+                  src={sort_button}
+                  onClick={() => {
+                    let _priceList = [...priceList]
+                    _priceList = _priceList.sort((a, b) =>
+                      a.card.price < b.card.price ? 1 : -1
+                    )
+                    setpriceList(_priceList)
+                    //下载为json文件
+                    var Link = document.createElement('a')
+                    Link.download = 'luck_draw_final_data.json'
+                    Link.style.display = 'none'
+                    // 字符内容转变成blob地址
+                    var data = JSON.stringify(_priceList, undefined, 4)
+                    var blob = new Blob([data], { type: 'text/json' })
+                    Link.href = URL.createObjectURL(blob)
+                    // 触发点击
+                    document.body.appendChild(Link)
+                    Link.click()
+                    // 然后移除
+                    document.body.removeChild(Link)
+                  }}
+                  className="go_button"
+                ></img>
+              ) : (
+                <></>
+              )}
             </Stack>
           </Paper>
         </Grid>
