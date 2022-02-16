@@ -218,7 +218,7 @@ export default function LuckDraw() {
         // setCards(shuffleCards(cards.concat(cards)))
       }, 500)
     } else {
-      if (round == 1) {
+      if (round <= 2) {
         if (tryTime + 1 > 1) {
           timeout.current = setTimeout(() => {
             setCurrentPerson(null)
