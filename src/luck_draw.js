@@ -195,12 +195,20 @@ export default function LuckDraw() {
         setRound(round + 1)
         setTimeout(() => {
           setCurrentPerson(null)
+
+setTryTime(0)
+            setClickTime(0)
+
           // setCards(shuffleCards(cards.concat(cards)))
         }, 1000)
       } else {
         setThisRoundRemainPeople(_thisRoundRemainPeople)
         setTimeout(() => {
           setCurrentPerson(null)
+
+setTryTime(0)
+            setClickTime(0)
+
         }, 1000)
       }
 
