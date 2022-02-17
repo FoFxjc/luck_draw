@@ -30,7 +30,7 @@ import sort_button from './images/sort_button.png'
 // import tiger_pic_6 from './images/tiger_pic_6.png'
 // import tiger_pic_7 from './images/tiger_pic_7.png'
 
-const uniqueElementsArray = []
+let uniqueElementsArray = []
 
 const people = [
   'Peter',
@@ -70,8 +70,6 @@ for (const property in images) {
     price: Number(property.replace('./', '').split('_').at(-1)),
   })
 }
-
-console.log(uniqueElementsArray)
 
 function importAll(r) {
   let images = {}
@@ -125,6 +123,8 @@ export default function LuckDraw() {
 
   const [tryTime, setTryTime] = useState(0)
 
+  const [clickTime, setClickTime] = useState(0)
+
   const disable = () => {
     setShouldDisableAllCards(true)
   }
@@ -133,8 +133,11 @@ export default function LuckDraw() {
   }
 
   const startLoop = () => {
-    setCurrentPerson(null)
-    setStart(true)
+    if (!currentPerson) {
+      setTryTime(0)
+      setCurrentPerson(null)
+      setStart(true)
+    }
   }
 
   const endLoop = () => {
@@ -210,20 +213,37 @@ export default function LuckDraw() {
     })
 
     if (_thisRoundRemainPeople.length === 0) {
-      setThisRoundRemainPeople([...remainPeople])
-      setRound(round + 1)
-      timeout.current = setTimeout(() => {
-        setOpenCards([])
-        setCurrentPerson(null)
-        // setCards(shuffleCards(cards.concat(cards)))
-      }, 500)
+      if (round < 2) {
+        if (tryTime + 1 > 1) {
+          timeout.current = setTimeout(() => {
+            setOpenCards([])
+            setThisRoundRemainPeople([...remainPeople])
+            setRound(round + 1)
+            setCurrentPerson(null)
+            setTryTime(0)
+            setClickTime(0)
+          }, 2000)
+        }
+        setTryTime(tryTime + 1)
+      } else {
+        setThisRoundRemainPeople([...remainPeople])
+        setRound(round + 1)
+        timeout.current = setTimeout(() => {
+          setOpenCards([])
+          setCurrentPerson(null)
+          setTryTime(0)
+          setClickTime(0)
+          // setCards(shuffleCards(cards.concat(cards)))
+        }, 500)
+      }
     } else {
-      if (round <= 2) {
+      if (round < 2) {
         if (tryTime + 1 > 1) {
           timeout.current = setTimeout(() => {
             setCurrentPerson(null)
             setThisRoundRemainPeople(_thisRoundRemainPeople)
             setTryTime(0)
+            setClickTime(0)
           }, 2000)
         }
         setTryTime(tryTime + 1)
@@ -232,6 +252,7 @@ export default function LuckDraw() {
           setCurrentPerson(null)
           setThisRoundRemainPeople(_thisRoundRemainPeople)
           setTryTime(0)
+          setClickTime(0)
         }, 2000)
       }
 
@@ -241,14 +262,17 @@ export default function LuckDraw() {
     }
   }
   const handleCardClick = (index) => {
-    if (currentPerson) {
-      if (openCards.length === 1) {
-        setOpenCards((prev) => [...prev, index])
-        setMoves((moves) => moves + 1)
-        disable()
-      } else {
-        clearTimeout(timeout.current)
-        setOpenCards([index])
+    if ((round < 2 && clickTime <= 3) || clickTime < 2) {
+      if (currentPerson) {
+        if (openCards.length === 1) {
+          setOpenCards((prev) => [...prev, index])
+          setMoves((moves) => moves + 1)
+          disable()
+        } else {
+          clearTimeout(timeout.current)
+          setOpenCards([index])
+        }
+        setClickTime(clickTime + 1)
       }
     }
   }
@@ -256,11 +280,11 @@ export default function LuckDraw() {
   useEffect(() => {
     let timeout = null
     if (openCards.length === 2) {
-      timeout = setTimeout(evaluate, 300)
+      evaluate()
     }
-    return () => {
-      clearTimeout(timeout)
-    }
+    // return () => {
+    //   clearTimeout(timeout)
+    // }
   }, [openCards])
 
   useEffect(() => {
@@ -363,8 +387,8 @@ export default function LuckDraw() {
             className="price_board"
             elevation={3}
             style={{
-              maxHeight: '580px',
-              minHeight: '580px',
+              maxHeight: '560px',
+              minHeight: '560px',
               overflow: 'auto',
             }}
           >
@@ -410,7 +434,7 @@ export default function LuckDraw() {
                               gutterBottom
                               style={{
                                 width: '80px',
-                                marginLeft: '25px',
+                                marginLeft: '20px',
                                 fontSize: '20px',
                                 color: 'white',
                               }}
@@ -424,6 +448,7 @@ export default function LuckDraw() {
                               md={1}
                               style={{
                                 marginTop: '-10px',
+                                marginLeft: '-15px',
                               }}
                             >
                               <Typography
@@ -457,8 +482,8 @@ export default function LuckDraw() {
         </Grid>
       </Grid>
       <Grid container spacing={2} className="footer_container">
-        <Grid item md={4} />
-        <Grid item md={2} className="person_list_wrapper">
+        <Grid item md={3} />
+        <Grid item md={3} className="person_list_wrapper">
           <Paper elevation={0} className="person_list_container">
             {!start ? (
               <Typography
@@ -466,10 +491,12 @@ export default function LuckDraw() {
                 component="div"
                 gutterBottom
                 style={{
-                  width: '100px',
+                  width: '200px',
+                  textAlign: 'center',
                   color: 'rgb(248, 197, 69)',
                   marginTop: '-5px',
                   marginLeft: '-5px',
+                  fontWeight: 'bold',
                 }}
               >
                 {currentPerson}
@@ -483,7 +510,8 @@ export default function LuckDraw() {
                       component="div"
                       gutterBottom
                       style={{
-                        width: '100px',
+                        width: '200px',
+                        textAlign: 'center',
                         color: 'rgb(248, 197, 69)',
                         marginTop: '-5px',
                         marginLeft: '-5px',
@@ -503,7 +531,7 @@ export default function LuckDraw() {
             elevation={0}
             style={{
               height: '100%',
-              marginTop: '-20px',
+              marginTop: '-15px',
               background: 'transparent',
             }}
           >
@@ -540,7 +568,8 @@ export default function LuckDraw() {
                 }}
                 className="price_button"
               ></img>
-              {remainPeople.length === 0 ? (
+              {remainPeople.length === 0 ||
+              priceList.length === uniqueElementsArray.length ? (
                 <img
                   src={sort_button}
                   onClick={() => {
@@ -572,29 +601,6 @@ export default function LuckDraw() {
           </Paper>
         </Grid>
       </Grid>
-
-      <Dialog
-        open={showModal}
-        disableBackdropClick
-        disableEscapeKeyDown
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          Hurray!!! You completed the challenge
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            You completed the game in {moves} moves. Your best score is{' '}
-            {bestScore} moves.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleRestart} color="primary">
-            Restart
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   )
 }
