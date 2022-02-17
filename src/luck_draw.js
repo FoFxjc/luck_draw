@@ -561,14 +561,14 @@ setTryTime(0)
                 ></img>
               )}
 
-              {/* <Button
+              <Button
                 variant="contained"
                 onClick={() => {
                   setDebug(!debug)
                 }}
               >
                 Debug
-              </Button> */}
+              </Button>
               <img
                 src={show_price_button}
                 onClick={() => {
