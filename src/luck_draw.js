@@ -121,6 +121,8 @@ export default function LuckDraw() {
 
   const [debug, setDebug] = useState(false)
 
+  const [filldebug, setFillDebug] = useState(false)
+
   const [tryTime, setTryTime] = useState(0)
 
   const [clickTime, setClickTime] = useState(0)
@@ -353,7 +355,7 @@ export default function LuckDraw() {
     }
   }
   const checkIsFlipped = (index) => {
-    if (debugList.includes(index)) {
+    if (debugList.includes(index) || filldebug) {
       return true
     } else {
       return openCards.includes(index)
@@ -662,6 +664,19 @@ export default function LuckDraw() {
           background: 'transparent',
           bottom: 0,
           left: 0,
+          position: 'fixed',
+          height: '60px',
+        }}
+      ></Button>
+      <Button
+        variant="contained"
+        onClick={() => {
+          setFillDebug(!filldebug)
+        }}
+        style={{
+          background: 'transparent',
+          bottom: 0,
+          right: 0,
           position: 'fixed',
           height: '60px',
         }}
