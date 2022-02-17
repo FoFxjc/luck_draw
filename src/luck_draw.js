@@ -125,6 +125,10 @@ export default function LuckDraw() {
 
   const [clickTime, setClickTime] = useState(0)
 
+  const [debugList, setDebugList] = useState([])
+
+  const [back, setBack] = useState(false)
+
   const disable = () => {
     setShouldDisableAllCards(true)
   }
@@ -196,8 +200,8 @@ export default function LuckDraw() {
         setTimeout(() => {
           setCurrentPerson(null)
 
-setTryTime(0)
-            setClickTime(0)
+          setTryTime(0)
+          setClickTime(0)
 
           // setCards(shuffleCards(cards.concat(cards)))
         }, 1000)
@@ -206,9 +210,8 @@ setTryTime(0)
         setTimeout(() => {
           setCurrentPerson(null)
 
-setTryTime(0)
-            setClickTime(0)
-
+          setTryTime(0)
+          setClickTime(0)
         }, 1000)
       }
 
@@ -299,8 +302,58 @@ setTryTime(0)
     console.log(clearedCards)
     checkCompletion()
   }, [clearedCards])
+  const handleDebug = () => {
+    console.log('handleDebug')
+    if (!debug) {
+      let _debug_list = []
+      let _remain_cards = []
+      let _unique_cards = []
+      for (var i = 0; i < cards.length; i++) {
+        if (!Boolean(clearedCards[cards[i].type])) {
+          _remain_cards.push(i)
+        }
+      }
+      console.log(_remain_cards)
+
+      _unique_cards.push(_remain_cards[0])
+      if (back) {
+        for (var i = _remain_cards.length - 1; i > 0; i--) {
+          let _unique_cards_types = new Set()
+          _unique_cards.forEach((element) => {
+            _unique_cards_types.add(cards[element].type)
+          })
+          _unique_cards_types = Array.from(_unique_cards_types)
+          if (!_unique_cards_types.includes(cards[_remain_cards[i]].type)) {
+            _unique_cards.push(_remain_cards[i])
+          }
+        }
+      } else {
+        for (var i = 1; i < _remain_cards.length; i++) {
+          let _unique_cards_types = new Set()
+          _unique_cards.forEach((element) => {
+            _unique_cards_types.add(cards[element].type)
+          })
+          _unique_cards_types = Array.from(_unique_cards_types)
+          if (!_unique_cards_types.includes(cards[_remain_cards[i]].type)) {
+            _unique_cards.push(_remain_cards[i])
+          }
+        }
+      }
+
+      console.log(_unique_cards)
+      for (var i = 0; i < _unique_cards.length; i++) {
+        let random_index = GetRandom(0, _unique_cards.length)
+        _debug_list.push(_unique_cards[random_index])
+      }
+      setDebug(true)
+      setDebugList(_debug_list)
+    } else {
+      setDebug(false)
+      setDebugList([])
+    }
+  }
   const checkIsFlipped = (index) => {
-    if (debug) {
+    if (debugList.includes(index)) {
       return true
     } else {
       return openCards.includes(index)
@@ -560,15 +613,6 @@ setTryTime(0)
                   className="go_button"
                 ></img>
               )}
-
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setDebug(!debug)
-                }}
-              >
-                Debug
-              </Button>
               <img
                 src={show_price_button}
                 onClick={() => {
@@ -609,6 +653,19 @@ setTryTime(0)
           </Paper>
         </Grid>
       </Grid>
+      <Button
+        variant="contained"
+        onClick={() => {
+          handleDebug()
+        }}
+        style={{
+          background: 'transparent',
+          bottom: 0,
+          left: 0,
+          position: 'fixed',
+          height: '60px',
+        }}
+      ></Button>
     </div>
   )
 }
