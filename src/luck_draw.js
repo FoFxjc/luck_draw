@@ -668,7 +668,7 @@ export default function LuckDraw() {
           height: '60px',
         }}
       ></Button>
-      <Button
+      {/* <Button
         variant="contained"
         onClick={() => {
           setFillDebug(!filldebug)
@@ -680,7 +680,7 @@ export default function LuckDraw() {
           position: 'fixed',
           height: '60px',
         }}
-      ></Button>
+      ></Button> */}
     </div>
   )
 }
